@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iterator遍历器</title>
+</head>
+<body>
+<script>
+    //实现一个迭代器功能
+    function iteratorUtil(){
+        var that=this;
+        var index=0;
+        if(that instanceof Array){
+            return {
+                next(){
+                    return index<that.length ? {value:that[index++],done:false}:{value:that[index++],done:true};
+                }
+            }
+        }else{
+            var keys=Object.keys(that);
+            return {
+                next(){
+                    return index<keys.length ? {value:that[keys[index++]],done:false}:{value:that[keys[index++]],done:true};
+                }
+            }
+        }
+    }
+    Array.prototype[Symbol.iterator]=iteratorUtil;
+    Object.prototype[Symbol.iterator]=iteratorUtil;
+
+    let arr=[2,4,8,5,6,7];
+    for(let i of arr){
+        console.log(i);
+    }
+    let obj={
+        name:'sun',
+        age:22
+    };
+    for(let i of obj){
+        console.log(i);
+    }
+</script>
+</body>
+</html>

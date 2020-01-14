@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>深拷贝</title>
+</head>
+<body>
+<script>
+    /**
+     *
+     * 实现思想
+     * 克隆的数据不能有引用类型数据
+     * 如果有，继续遍历挖掘直到每次拷贝的都是基本数据类型
+     */
+    function getType(target){
+        return Object.prototype.toString.call(target).slice(8,-1);
+    }
+    function cloneUtil(target){
+        let result;
+        if(getType(target)==='Object'){
+            result={};
+        }else if(getType(target)==='Array'){
+            result=[];
+        }else{
+            result=target;
+        }
+        for(let i in target){
+            let item=target[i];
+            if(getType(item)==='Object'||getType(item)==='Array'){
+                result[i]=cloneUtil(item);
+            }else{
+                result[i]=item;
+            }
+
+        }
+        return result;
+    }
+    var obj={
+        name:'sun',
+        age:22,
+        sex:{
+            option1:'男',
+            option2:'女'
+        }
+    };
+    let result=cloneUtil(obj);
+    result.sex.option2='xxx';
+    console.log(result,obj);
+</script>
+</body>
+</html>
